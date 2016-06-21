@@ -1,0 +1,19 @@
+<h1>Time Table for <%= "#{@worker.first_name} #{@worker.last_name}" %></h1>
+
+<table id="time_table">
+  <thead>
+  <tr>
+    <th colspan="3"></th>
+  </thead>
+    <td>arrival</td>
+    <td>departure</td>
+    <td></td>
+  </tr>
+  <% @time_tables.each do |table| %>
+      <tr>
+        <td><%= table.arrival %></td>
+        <td><%= table.departure %></td>
+      </tr>
+  <% end %>
+
+</table>

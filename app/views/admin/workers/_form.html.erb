@@ -1,0 +1,19 @@
+<%= simple_form_for @worker, url: edit_worker_path do |f| %>
+
+    <%= f.input :email, placeholder: 'Enter email' %>
+
+    <%= f.input :mac, placeholder: 'mac address' %>
+
+    <%= f.input :ip, placeholder: 'ip address' %>
+
+    <%= f.input :host_name, placeholder: 'host name' %>
+
+    <%= f.input :first_name, placeholder: 'first name' %>
+
+    <%= f.input :last_name, placeholder: 'last name' %>
+    <%= hidden_field_tag(:id, @worker.id) %>
+
+    <%= f.input :file, as: :file, wrapper: :vertical_file_input %>
+
+    <%= f.button :submit ,name: "Save" %>
+<% end %>

@@ -1,0 +1,23 @@
+<h1>Welcome to Dashboard  </h1>
+
+Employees:
+<table id="workers">
+  <thead>
+  <tr>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+  <tbody>
+  <% @workers.each do |worker| %>
+      <tr>
+        <td><%= worker.first_name %></td>
+        <td><%= worker.last_name%></td>
+        <td><%= worker.mac%></td>
+        <td><%= worker.ip%></td>
+        <td><%= worker.host_name%></td>
+        <td><%= link_to "Detail",admin_show_worker_path(worker) %></td>
+        <td><%= link_to "Time Table",admin_time_table_path(worker.id) , method: :get %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>

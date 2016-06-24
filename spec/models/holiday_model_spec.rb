@@ -1,0 +1,2 @@
+class HolidayModelSpec
+end

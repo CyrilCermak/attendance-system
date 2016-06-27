@@ -10,21 +10,24 @@ RSpec.describe Position, type: :model do
                         ip: "098876554432",
                         state: false,
                         host_name: "cyril@mbp",
-                        email: "aaaa@gmail.com")
+                        email: "aaaa@gmail.com",
+                        password: "123456789A")
     @w1 = Worker.create!(last_name: "Cermak",
                         first_name: "Cyril",
-                        mac: "123456789",
+                        mac: "1234567890",
                         ip: "098876554432",
                         state: false,
                         host_name: "cyril@mbp",
-                        email: "aaaaa@gmail.com")
+                        email: "aaaaa@gmail.com",
+                         password: "123456789A")
     @w2 = Worker.create!(last_name: "Cermak",
                         first_name: "Cyril",
-                        mac: "123456789",
+                        mac: "12345678901",
                         ip: "098876554432",
                         state: false,
                         host_name: "cyril@mbp",
-                        email: "aaaaaa@gmail.com")
+                        email: "aaaaaa@gmail.com",
+                         password: "123456789A")
   end
 
   it 'must have a name' do

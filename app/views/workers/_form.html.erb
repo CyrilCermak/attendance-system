@@ -1,0 +1,18 @@
+<%= simple_form_for @worker, url: admin_create_worker_path do |f| %>
+
+    <%= f.input :first_name, placeholder: 'first name' %>
+
+    <%= f.input :last_name, placeholder: 'last name' %>
+
+    <%= f.input :email, placeholder: 'Enter email' %>
+
+    <%= f.input :password, placeholder: 'Password' %>
+
+    <%= f.association :position, collection: Position.all %>
+
+    <%= f.input :mac, placeholder: 'mac address' %>
+
+    <%= f.input :ip, placeholder: 'ip address' %>
+
+    <%= f.button :submit ,name: "Save" %>
+<% end %>

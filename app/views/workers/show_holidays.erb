@@ -1,0 +1,32 @@
+<h1>Holidays for <%= "#{@worker.first_name} #{@worker.last_name}" %></h1>
+<p id="notice"><%= notice %></p>
+
+<div class="table-responsive">
+<table class="table">
+  <thead>
+  <tr>
+    <th>Start</th>
+    <th>End</th>
+    <th>Name</th>
+    <th colspan="3"></th>
+  </tr>
+  </thead>
+
+  <tbody>
+  <% @holidays.each do |holiday| %>
+      <tr>
+        <td><%= holiday.start %></td>
+        <td><%= holiday.end %></td>
+        <td><%= holiday.name %></td>
+        <td><%= link_to 'Show', admin_holiday_detail_path(holiday) %></td>
+        <td><%= link_to 'Edit', admin_edit_holiday_path(holiday) %></td>
+        <td><%= link_to 'Destroy', admin_delete_holiday_path(holiday), method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+  <% end %>
+  </tbody>
+</table>
+</div>
+
+<br>
+
+<%= link_to 'New Holiday', admin_new_holiday_path%>

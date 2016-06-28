@@ -1,0 +1,134 @@
+<div class="col-sm-12">
+  <table class="table table-striped table-bordered table-hover dataTable no-footer" id="dataTables-example" role="grid" aria-describedby="dataTables-example_info">
+    <thead>
+    <tr role="row">
+      <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Worker: activate to sort column ascending" style="width: 104px;">Worker</th>
+      <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" aria-sort="descending" style="width: 127px;">Position</th>
+      <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Department: activate to sort column ascending" style="width: 118px;">Department</th>
+      <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending" style="width: 66px;">Email</th>
+      <th aria-label="Show: deactivate to sort column ascending" style="width: 66px;">Show</th>
+      <th tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Edit:" style="width: 66px;">Edit</th>
+      <th tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Delete:" style="width: 66px;">Delete</th>
+
+    </tr>
+    </thead>
+    <tbody>
+    <% @workers.each do |worker| %>
+        <tr class="Worker odd" role="row">
+          <td class=""><%= worker.full_name %></td>
+          <% if worker.position %>
+              <td class="sorting_1"><%= worker.position.name %></td>
+          <% else %>
+              <td class="sorting_1"></td>
+          <% end %>
+          <% if worker.position && worker.position.department %>
+              <td class="sorting_1"><%= worker.position.department.name %></td>
+          <% else %>
+              <td class="sorting_1"></td>
+          <% end %>
+          <td class="sorting_1"><%= worker.email %></td>
+          <td class=""><%= link_to "Show", "#showModal", data: {toggle: :modal} %></td>
+          <td class=""><%= link_to "Edit", "#editModal", data: {toggle: :modal} %></td>
+          <td class=""><%= link_to "Delete", admin_delete_worker_path(worker), method: :delete %></td>
+
+          <!--SHOW MODAL-->
+          <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h2 class="modal-title" id="myModalLabel"><%= worker.full_name %></h2>
+                </div>
+                <div class="modal-body">
+                  <p>Email:<h4> <%= worker.email %></h4>
+                  <% if worker.position %>
+                      Position:<h4> <%= worker.position.name %></h4>
+                  <% else %>
+                      Position:<h4></h4>
+                  <% end %>
+                  <% if worker.position && worker.position.department %>
+                      Department:<h4> <%= worker.position.department.name %></h4>
+                  <% else %>
+                      Department:<h4></h4>
+                  <% end %>
+                  At work: <h4> <%= worker.is_working? %></h4>
+                  Admin:<h4> <%= worker.is_admin? %></h4>
+                  Mac address:<h4> <%= worker.mac %></h4>
+                  IP address:<h4> <%= worker.ip %></h4>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+          <!-- /.modal -->
+          <!--Edit Modal-->
+          <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+            <div class="modal-dialog">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                  <h2 class="modal-title" id="myModalLabel"><%= worker.full_name %></h2>
+                </div>
+                <div class="modal-body">
+                  <%= simple_form_for worker, url: admin_edit_worker_path(worker) do |f| %>
+                      <%= f.input :first_name, placeholder: 'first name' %>
+                      <%= f.input :last_name, placeholder: 'last name' %>
+                      <%= f.input :email, placeholder: 'Enter email' %>
+                      <%= f.input :mac, placeholder: 'Mac address' %>
+                      <%= f.input :ip, placeholder: 'Ip address' %>
+                      <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+                  <% end %>
+                </div>
+                <div class="modal-footer">
+                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                </div>
+              </div>
+              <!-- /.modal-content -->
+            </div>
+            <!-- /.modal-dialog -->
+          </div>
+        </tr>
+    <% end %>
+    </tbody>
+  </table>
+  <div class="CreateWorker">
+    <a href="#newModal" data-toggle="modal">
+      <button type="button" class="btn btn-primary btn-lg btn-block">New Worker</button>
+    </a>
+    <!--Edit Modal-->
+    <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+          </div>
+          <div class="modal-body">
+            <% worker = Worker.new %>
+            <%= simple_form_for worker, url: admin_create_worker_path do |f| %>
+                <%= f.input :first_name, placeholder: 'first name' %>
+                <%= f.input :last_name, placeholder: 'last name' %>
+                <%= f.input :email, placeholder: 'Enter email' %>
+                <%= f.input :password, placeholder: 'Password' %>
+                <%= f.association :position, collection: Position.all %>
+                <%= f.input :mac, placeholder: 'Mac address' %>
+                <%= f.input :ip, placeholder: 'Ip address' %>
+                <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+  </div>
+
+</div>
+

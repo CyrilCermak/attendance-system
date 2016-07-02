@@ -1,23 +1,202 @@
-<h1>Welcome to Dashboard  </h1>
+<h1>Dashboard</h1>
+<h3><%= Time.now.strftime("%A %d %B %Y") %></h3>
 
-Employees:
-<table id="workers">
-  <thead>
-  <tr>
-    <th colspan="3"></th>
-  </tr>
-  </thead>
-  <tbody>
-  <% @workers.each do |worker| %>
-      <tr>
-        <td><%= worker.first_name %></td>
-        <td><%= worker.last_name%></td>
-        <td><%= worker.mac%></td>
-        <td><%= worker.ip%></td>
-        <td><%= worker.host_name%></td>
-        <td><%= link_to "Detail",admin_show_worker_path(worker) %></td>
-        <td><%= link_to "Time Table",admin_time_table_path(worker.id) , method: :get %></td>
-      </tr>
-  <% end %>
-  </tbody>
-</table>
+<div class="row">
+  <!-- /.panel -->
+  <div class="col-lg-8">
+    <div class="panel panel-red">
+      <div class="panel-heading">
+        <h4>At Work: (<%= @workers_at_work.size %>/<%= @workers.size %>)</h4>
+      </div>
+      <!-- .panel-heading -->
+      <div class="panel-body">
+        <div class="panel-group" id="accordion">
+          <% @workers_at_work.each_with_index do |worker, index| %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="true" class="" style="color: white;"><%= worker.full_name %></a>
+                  </h4>
+                </div>
+                <div id="collapse<%= index %>" class="panel-collapse collapse" aria-expanded="true">
+                  <div class="panel-body">
+                    <h5>From: <%= worker.time_tables.last.start_time %></h5>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <!-- .panel-body -->
+  </div>
+
+  <div class="col-lg-4">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <i class="fa fa-users fa-fw"></i> Statistics
+      </div>
+      <!-- /.panel-heading -->
+      <div class="panel-body">
+        <div class="list-group">
+          <a href="#" class="list-group-item">
+            <i class="fa fa-user fa-fw"></i> At work
+                                    <span class="pull-right text-muted small"><em><%= @workers_at_work.size %></em>
+                                    </span>
+          </a>
+          <a href="#" class="list-group-item">
+            <i class="fa fa-user fa-fw"></i> Out of work
+                                    <span class="pull-right text-muted small"><em><%= @workers.size %></em>
+                                    </span>
+          </a>
+          <a href="#" class="list-group-item">
+            <i class="fa fa-user fa-fw"></i> On holidays
+                                    <span class="pull-right text-muted small"><em><%= @holidays.size %></em>
+                                    </span>
+          </a>
+          <a href="#" class="list-group-item">
+            <i class="fa fa-tasks fa-sun-o"></i> This month holidays
+                                    <span class="pull-right text-muted small"><em><%= @this_month_holidays.size %></em>
+                                    </span>
+          </a>
+          <a href="#" class="list-group-item">
+            <i class="fa fa-upload fa-sun-o"></i> Holidays to review
+                                    <span class="pull-right text-muted small"><em><%= @holidays_to_review.size %></em>
+                                    </span>
+          </a>
+        </div>
+        <!-- /.list-group -->
+        <a href="<%= admin_show_holidays_path %>" class="btn btn-default btn-block">Review
+          holidays (<%= @holidays_to_review.size %>)</a>
+      </div>
+      <!-- /.panel-body -->
+    </div>
+    <!-- /.panel -->
+  </div>
+
+  <!--Out of Work-->
+  <div class="col-lg-8">
+    <div class="panel panel-red">
+      <div class="panel-heading">
+        <h4>Out of work: (<%= @workers_out_of_work.size %>/<%= @workers.size %>)</h4>
+      </div>
+      <!-- .panel-heading -->
+      <div class="panel-body">
+        <div class="panel-group" id="accordion">
+          <% @workers_out_of_work.each_with_index do |worker, index| %>
+              <% index = index + @workers_at_work.size + 1 %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="true" class="" style="color: white;"><%= worker.full_name %></a>
+                  </h4>
+                </div>
+                <div id="collapse<%= index %>" class="panel-collapse collapse" aria-expanded="true">
+                  <div class="panel-body">
+                    <h5>Last seen: <%= worker.time_tables.last.end_time %></h5>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- .panel-body -->
+
+  <!-- /.panel -->
+  <!--/Out of Work-->
+
+  <!--Workers On Holidays-->
+  <div class="col-lg-8">
+    <div class="panel panel-red">
+      <div class="panel-heading">
+        <h4>On Holidays</h4>
+      </div>
+      <!-- .panel-heading -->
+      <div class="panel-body">
+        <div class="panel-group" id="accordion">
+          <% @holidays.each_with_index do |holiday, index| %>
+              <% index = index + @workers_at_work.size + @holidays.size + 1 %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="true" class="" style="color: white;"><%= holiday.name %>
+                      - <%= holiday.worker.full_name %></a>
+                  </h4>
+                </div>
+                <div id="collapse<%= index %>" class="panel-collapse collapse" aria-expanded="true">
+                  <div class="panel-body">
+                    <h5>From: <%= holiday.start_time %></h5>
+                    <h5>To: <%= holiday.end_time %></h5>
+                    <h5>Total days: <%= holiday.total_days %></h5>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- .panel-body -->
+
+  <!-- /.panel -->
+  <!--/Holidays-->
+
+  <!--This month Holidays-->
+  <div class="col-lg-8">
+    <div class="panel panel-red">
+      <div class="panel-heading">
+        <h4>This month holidays</h4>
+      </div>
+      <!-- .panel-heading -->
+      <div class="panel-body">
+        <div class="panel-group" id="accordion">
+          <% @this_month_holidays.each_with_index do |holiday, index| %>
+              <% index = index + @workers_at_work.size + @holidays.size + @this_month_holidays.size + 1 %>
+              <div class="panel panel-default">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="true" class="" style="color: white;"><%= holiday.name %>
+                      - <%= holiday.worker.full_name %></a>
+                  </h4>
+                </div>
+                <div id="collapse<%= index %>" class="panel-collapse collapse" aria-expanded="true">
+                  <div class="panel-body">
+                    <h5>From: <%= holiday.start_time %></h5>
+                    <h5>To: <%= holiday.end_time %></h5>
+                    <h5>Total days: <%= holiday.total_days %></h5>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- .panel-body -->
+<!-- /.panel -->
+<!--/Holidays-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

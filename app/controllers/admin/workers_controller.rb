@@ -1,14 +1,23 @@
-class WorkersController < ApplicationController
+class Admin::WorkersController < AdminController
   before_filter :authenticate_user!
-  before_action :set_worker, only: [:show, :update, :destroy]
+  before_action :set_worker, only: [:show, :update, :destroy, :show_holidays]
   before_action :is_admin?, only: [:update, :destroy, :create, :new, :edit]
+
+  def index
+    @workers = Worker.all
+  end
 
   def new
     @worker = Worker.new
   end
 
   def show
+    respond_to do |format|
+      format.html
+      format.js
+    end
   end
+
   # GET /workers/1/edit
   def edit
     @worker = Worker.find(params[:id])
@@ -20,7 +29,7 @@ class WorkersController < ApplicationController
     @worker = Worker.new(worker_params)
     respond_to do |format|
       if @worker.save
-        format.html { redirect_to @worker, notice: 'Worker was successfully created.' }
+        format.html { redirect_to admin_workers_path, notice: 'Worker was successfully created.' }
         format.json { render :show, status: :created, location: @worker }
       else
         format.html { render :new }
@@ -34,7 +43,7 @@ class WorkersController < ApplicationController
   def update
     respond_to do |format|
       if @worker.update(worker_params)
-        format.html { redirect_to show_worker_path , notice: 'Worker was successfully updated.' }
+        format.html { redirect_to admin_workers_path, notice: 'Worker was successfully updated.' }
         format.json { render :show, status: :ok, location: @worker }
       else
         format.html { render :edit }
@@ -53,6 +62,10 @@ class WorkersController < ApplicationController
     end
   end
 
+  def show_holidays
+    @holidays = @worker.holidays
+  end
+
   private
   # Use callbacks to share common setup or constraints between actions.
   def set_worker
@@ -68,6 +81,6 @@ class WorkersController < ApplicationController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def worker_params
-    params.require(:worker).permit(:mac, :first_name, :ip, :mac, :state, :last_name,:email)
+    params.require(:worker).permit(:mac, :first_name, :ip, :mac, :state, :last_name, :email, :password, :position_id)
   end
 end

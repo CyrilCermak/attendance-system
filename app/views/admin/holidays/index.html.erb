@@ -1,31 +1,104 @@
-<p id="notice"><%= notice %></p>
+<div class="row">
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Holidays for approve
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Worker</th>
+            <th>Holiday</th>
+            <th>From</th>
+            <th>To</th>
+            <th>Approve</th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @holidays_for_review.each do |holiday| %>
+              <tr class="danger">
+                <td><%= holiday.worker.full_name %></td>
+                <td><%= holiday.name %></td>
+                <td><%= holiday.start_time %></td>
+                <td><%= holiday.end_time %></td>
+                <td><%= link_to "Approve", admin_approve_holiday_path(holiday) %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 
-<h1>Listing Holidays</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th>Start</th>
-      <th>End</th>
-      <th>Name</th>
-      <th colspan="3"></th>
-    </tr>
-  </thead>
+  <div class="col-lg-12">
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Approved holidays (<%= Time.new.strftime("%Y") %>)
+      </div>
+      <div class="table-responsive">
+        <table class="table">
+          <thead>
+          <tr>
+            <th>Worker</th>
+            <th>Holiday</th>
+            <th>From</th>
+            <th>To</th>
+            <th></th>
+          </tr>
+          </thead>
+          <tbody>
+          <% @holidays_reviewed.each do |holiday| %>
+              <tr class="success">
+                <td><%= holiday.worker.full_name %></td>
+                <td><%= holiday.name %></td>
+                <td><%= holiday.start_time %></td>
+                <td><%= holiday.end_time %></td>
+                <td><%= link_to "Delete", admin_delete_holiday_path(holiday), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+                <td></td>
+              </tr>
+          <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+  <%= button_to "Calendar", admin_holidays_cal_path, class: "btn btn-primary btn-lg btn-block", type: "button", method: :get %>
+  <br>
+  <!--<%= button_to "New holiday", "#newHoliday", class: "btn btn-danger btn-lg btn-block", toggle: "modal", type: "button", method: :get %>-->
 
-  <tbody>
-    <% @holidays.each do |holiday| %>
-      <tr>
-        <td><%= holiday.start %></td>
-        <td><%= holiday.end %></td>
-        <td><%= holiday.name %></td>
-        <td><%= link_to 'Show', holiday %></td>
-        <td><%= link_to 'Edit', edit_holiday_path(holiday) %></td>
-        <td><%= link_to 'Destroy', holiday, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+  <a href="#newHoliday" data-toggle="modal">
+    <button type="button" class="btn btn-primary btn-lg btn-block">New holiday</button>
+  </a>
+</div>
 
-<br>
 
-<%= link_to 'New Holiday', new_holiday_path %>
+<div class="col-lg-12">
+  <div class="modal fade" id="newHoliday" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+          <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+        </div>
+        <div class="modal-body">
+          <% holiday = Holiday.new %>
+          <%= simple_form_for holiday, url: admin_create_holiday_path do |f| %>
+              <%= f.input :name, placeholder: "Name" %>
+              <%= f.input :start, placeholder: "From" %>
+              <%= f.input :end, placeholder: "To" %>
+              <%= f.association :worker, collection: Worker.all %>
+              <%= f.button :submit, name: "Save", class: "btn btn-default", method: :post %>
+          <% end %>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+</div>

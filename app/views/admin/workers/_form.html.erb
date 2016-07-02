@@ -1,19 +1,20 @@
-<%= simple_form_for @worker, url: edit_worker_path do |f| %>
+<div id="row">
+  <%= simple_form_for @worker, url: admin_create_worker_path do |f| %>
 
-    <%= f.input :email, placeholder: 'Enter email' %>
+      <%= f.input :first_name, placeholder: 'first name' %>
 
-    <%= f.input :mac, placeholder: 'mac address' %>
+      <%= f.input :last_name, placeholder: 'last name' %>
 
-    <%= f.input :ip, placeholder: 'ip address' %>
+      <%= f.input :email, placeholder: 'Enter email' %>
 
-    <%= f.input :host_name, placeholder: 'host name' %>
+      <%= f.input :password, placeholder: 'Password' %>
 
-    <%= f.input :first_name, placeholder: 'first name' %>
+      <%= f.association :position, collection: Position.all %>
 
-    <%= f.input :last_name, placeholder: 'last name' %>
-    <%= hidden_field_tag(:id, @worker.id) %>
+      <%= f.input :mac, placeholder: 'mac address' %>
 
-    <%= f.input :file, as: :file, wrapper: :vertical_file_input %>
+      <%= f.input :ip, placeholder: 'ip address' %>
 
-    <%= f.button :submit ,name: "Save" %>
-<% end %>
+      <%= f.button :submit, name: "Save" %>
+  <% end %>
+</div>

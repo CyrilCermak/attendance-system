@@ -1,13 +1,9 @@
 require 'roar/json'
-module API
-  module Representers
-    module WorkersRepresenter
-      include Roar::JSON
-      include Grape::Roar::Representer
+module API::Representers::WorkersRepresenter
+  include Roar::JSON
+  include Grape::Roar::Representer
 
-      collection :entries, extend: WorkerRepresenter, as: :workers
-    end
-  end
+  collection :entries, extend: API::Representers::WorkerRepresenter, as: :workers
 end
 
 

@@ -1,0 +1,6 @@
+<%= simple_form_for @position, url: admin_create_position_path do |f| %>
+    <% f.input :name %>
+    <% f.input :wage %>
+    <% f.association :workers %>
+    <% f.button :submit %>
+<% end %>

@@ -1,0 +1,11 @@
+---
+tags:
+- users
+parameters:
+- name: token
+  in: query
+  required: true
+  type: string
+responses:
+  default:
+    description: Unexpected error

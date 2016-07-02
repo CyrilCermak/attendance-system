@@ -11,20 +11,57 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160604094719) do
+ActiveRecord::Schema.define(version: 20160626052232) do
 
   create_table "dashboards", force: :cascade do |t|
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
+  create_table "departments", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "floor"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
+    t.integer  "positions_id"
+  end
+
+  create_table "holidays", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.string   "name"
+    t.boolean  "reviewed",   default: false
+    t.integer  "worker_id"
+    t.datetime "created_at",                 null: false
+    t.datetime "updated_at",                 null: false
+  end
+
+  create_table "positions", force: :cascade do |t|
+    t.string   "name"
+    t.integer  "wage"
+    t.integer  "workers_id"
+    t.datetime "created_at",    null: false
+    t.datetime "updated_at",    null: false
+    t.integer  "department_id"
+  end
+
+  add_index "positions", ["department_id"], name: "index_positions_on_department_id"
+
+  create_table "time_tables", force: :cascade do |t|
+    t.datetime "start"
+    t.datetime "end"
+    t.integer  "worker_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "users", force: :cascade do |t|
-    t.string   "email",                  default: "", null: false
-    t.string   "encrypted_password",     default: "", null: false
+    t.string   "email",                  default: "",    null: false
+    t.string   "encrypted_password",     default: "",    null: false
     t.string   "reset_password_token"
     t.datetime "reset_password_sent_at"
     t.datetime "remember_created_at"
-    t.integer  "sign_in_count",          default: 0,  null: false
+    t.integer  "sign_in_count",          default: 0,     null: false
     t.datetime "current_sign_in_at"
     t.datetime "last_sign_in_at"
     t.string   "current_sign_in_ip"
@@ -32,9 +69,47 @@ ActiveRecord::Schema.define(version: 20160604094719) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "token"
+    t.boolean  "admin",                  default: false
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "mac"
+    t.string   "ip"
+    t.boolean  "state"
+    t.string   "host_name"
+    t.integer  "position_id"
+    t.integer  "time_tables_id"
+    t.string   "type"
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
+  add_index "users", ["position_id"], name: "index_users_on_position_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
+
+  create_table "warkers", force: :cascade do |t|
+    t.string   "mac"
+    t.string   "first_name"
+    t.string   "ip"
+    t.boolean  "state"
+    t.string   "last_name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "workers", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "host_name"
+    t.string   "ip"
+    t.string   "mac"
+    t.boolean  "state"
+    t.datetime "created_at",  null: false
+    t.datetime "updated_at",  null: false
+    t.integer  "position_id"
+    t.string   "email"
+    t.integer  "holidays_id"
+  end
+
+  add_index "workers", ["holidays_id"], name: "index_workers_on_holidays_id"
+  add_index "workers", ["position_id"], name: "index_workers_on_position_id"
 
 end

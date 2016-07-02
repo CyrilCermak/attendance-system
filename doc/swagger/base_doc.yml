@@ -1,0 +1,23 @@
+---
+swagger: '2.0'
+info:
+  title: auth_and_api
+  description: auth_and_api
+  termsOfService: https://localhost/tos.html
+  contact:
+    name: John Doe
+    email: john.doe@example.com
+    url: https://google.com/?q=john%20doe
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  version: '0.1'
+host: localhost:80
+basePath: "/api/v1"
+schemes:
+- https
+- http
+consumes:
+- application/json
+produces:
+- application/json

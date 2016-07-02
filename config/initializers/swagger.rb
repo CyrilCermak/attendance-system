@@ -1,2 +1,6 @@
-class Swagger
-end
+GrapeSwaggerRails.options.url      = '/swagger.json'
+GrapeSwaggerRails.options.app_url  = 'http://localhost:3000'
+GrapeSwaggerRails.options.app_name = 'AuthAndAPI'
+GrapeSwaggerRails.options.doc_expansion = 'list'
+GrapeSwaggerRails.options.api_key_name = 'api_token'
+GrapeSwaggerRails.options.api_key_type = 'query'

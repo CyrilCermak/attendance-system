@@ -1,0 +1,15 @@
+---
+tags:
+- users
+parameters:
+- name: email
+  in: query
+  required: true
+  type: string
+- name: password
+  in: query
+  required: true
+  type: string
+responses:
+  default:
+    description: Unexpected error

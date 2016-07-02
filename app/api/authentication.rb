@@ -3,11 +3,9 @@ module API::Authentication
 
   included do
     helpers Helpers
-
     before do
       authenticate!
     end
-
   end
 
 end

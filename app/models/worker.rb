@@ -1,43 +1,62 @@
 # == Schema Information
 #
-# Table name: workers
+# Table name: users
 #
-#  id          :integer          not null, primary key
-#  first_name  :string
-#  last_name   :string
-#  host_name   :string
-#  ip          :string
-#  mac         :string
-#  state       :boolean
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  position_id :integer
-#  email       :string
+#  id                     :integer          not null, primary key
+#  email                  :string           default(""), not null
+#  encrypted_password     :string           default(""), not null
+#  reset_password_token   :string
+#  reset_password_sent_at :datetime
+#  remember_created_at    :datetime
+#  sign_in_count          :integer          default(0), not null
+#  current_sign_in_at     :datetime
+#  last_sign_in_at        :datetime
+#  current_sign_in_ip     :string
+#  last_sign_in_ip        :string
+#  created_at             :datetime
+#  updated_at             :datetime
+#  token                  :string
+#  admin                  :boolean          default(FALSE)
+#  first_name             :string
+#  last_name              :string
+#  mac                    :string
+#  ip                     :string
+#  state                  :boolean
+#  host_name              :string
+#  position_id            :integer
+#  time_tables_id         :integer
+#  type                   :string
 #
 
-class Worker < ActiveRecord::Base
+class Worker < User
+  belongs_to :user
   belongs_to :position
   has_many :time_tables
+  has_many :holidays
 
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates :first_name, presence: true
   validates :last_name, presence: true
-  validates :email, presence: true, length: {maximum: 255}, format:
-      { with: VALID_EMAIL_REGEX }, uniqueness: {case_sensitive: false}
   validates :mac, uniqueness: true
+
+  include WorkersHelper
 
   def status_changed(state)
     if state
-      record = TimeTable.create!(arrival: Time.now, departure: nil ,worker: self)
+      record = TimeTable.create!(start: Time.now, end: nil ,worker: self)
       self.time_tables << record
     else
       record = self.time_tables.last
-      record.departure = Time.now
+      record.end = Time.now
       record.save!
     end
     self.state = state
     self.save!
-    true
   end
+
+  def to_s
+    self.full_name
+  end
+
 
 end

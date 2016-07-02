@@ -1,0 +1,188 @@
+<div class="row">
+  <!-- /.panel -->
+  <div class="col-lg-12">
+    <div class="panel panel-primary">
+      <div class="panel-heading">
+        <h4>Departments: (<%= @departments.size %>)</h4>
+      </div>
+      <!-- .panel-heading -->
+      <div class="panel-body">
+        <div class="panel-group" id="accordion">
+          <% @departments.each_with_index do |department, index| %>
+              <div class="panel panel-primary">
+                <div class="panel-heading">
+                  <h4 class="panel-title">
+                    <a data-toggle="collapse" data-parent="#accordion" href="#collapse<%= index %>" aria-expanded="true" class="" style="color: white;"><%= department.name %></a>
+                  </h4>
+                </div>
+                <div id="collapse<%= index %>" class="panel-collapse" aria-expanded="true">
+                  <div class="panel-body">
+                    <div cl></div>
+                    <div class="table-responsive table-bordered">
+                      <table class="table">
+                        <thead>
+                        <tr>
+                          <th>Name</th>
+                          <th>Wage</th>
+                          <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <% department.positions.each_with_index do |position, index| %>
+                            <tr class="success">
+                              <td><%= position.name %></td>
+                              <td><%= position.wage %></td>
+                              <td class=""><%= link_to "Delete", admin_delete_position_path(position), method: :delete, data: {confirm: 'Are you sure?'} %></td>
+                            </tr>
+                        <% end %>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <div class="CreateDepartment">
+      <!--Edit Modal-->
+      <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+              <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+            </div>
+            <div class="modal-body">
+              <% department = Department.new %>
+              <%= simple_form_for department, url: admin_create_department_path do |f| %>
+                  <%= f.input :name, placeholder: 'Name' %>
+                  <%= f.input :floor %>
+                  <%= f.association :positions, collection_check_boxes: Position.all %>
+                  <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+              <% end %>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+          <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+      </div>
+    </div>
+  </div>
+
+
+  <div class="panel-body">
+    <div class="table-responsive table-bordered">
+      <table class="table">
+        <thead>
+        <tr>
+          <th>Name</th>
+          <th>Wage</th>
+          <th>Edit</th>
+        </tr>
+        </thead>
+        <% @positions.each do |position| %>
+            <tbody>
+            <tr>
+              <td><%= position.name %></td>
+              <td><%= position.wage %></td>
+              <td><%= link_to "Edit", "#editPosition", data: {toggle: :modal} %></td>
+            </tr>
+            <div class="modal fade" id="editPosition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                    <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+                  </div>
+                  <div class="modal-body">
+                    <%= simple_form_for position, url: admin_update_position_path(position) do |f| %>
+                        <%= f.input :name, placeholder: 'Name' %>
+                        <%= f.input :wage %>
+                        <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+                    <% end %>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                  </div>
+                </div>
+                <!-- /.modal-content -->
+              </div>
+              <!-- /.modal-dialog -->
+            </div>
+        <% end %>
+        </tbody>
+      </table>
+    </div>
+    <!-- /.table-responsive -->
+  </div>
+
+
+  <a href="#newDepartment" data-toggle="modal">
+    <button type="button" class="btn btn-primary btn-lg btn-block">New Department</button>
+  </a>
+  <br>
+  <a href="#newPosition" data-toggle="modal">
+    <button type="button" class="btn btn-danger btn-lg btn-block">New Position</button>
+  </a>
+  <div class="CreateDepartment">
+    <!--Edit Modal-->
+    <div class="modal fade" id="newDepartment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+          </div>
+          <div class="modal-body">
+            <% department = Department.new %>
+            <%= simple_form_for department, url: admin_create_department_path do |f| %>
+                <%= f.input :name, placeholder: 'Name' %>
+                <%= f.input :floor %>
+                <%= f.association :positions, collection_check_boxes: Position.all %>
+                <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+  </div>
+
+  <div class="CreatePosition">
+    <!--Edit Modal-->
+    <div class="modal fade" id="newPosition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+            <h2 class="modal-title" id="myModalLabel">New Position</h2>
+          </div>
+          <div class="modal-body">
+            <% position = Position.new %>
+            <%= simple_form_for position, url: admin_create_position_path do |f| %>
+                <%= f.input :name, placeholder: 'Name' %>
+                <%= f.input :wage %>
+                <%= f.association :department %>
+                <%= f.association :workers, collection_check_boxes: Worker.all %>
+                <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+            <% end %>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+        <!-- /.modal-content -->
+      </div>
+      <!-- /.modal-dialog -->
+    </div>
+  </div>
+</div>

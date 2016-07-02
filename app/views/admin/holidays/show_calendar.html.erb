@@ -1,0 +1,41 @@
+<div class="row">
+  <div class="col-lg-12">
+    <div id="calendar">
+      <script>
+        $(document).ready(function () {
+          $('#calendar').fullCalendar({
+            eventSources: [
+              {
+                url: "/api/holidays",
+                type: 'GET',
+                color: 'red',
+                textColor: 'black'
+              },
+              {
+                error: function () {
+                  alert('there was an error while fetching events!');
+                },
+              }
+            ],
+            header: {
+              center: 'month,week,day'
+            },
+            views: {
+              week: {
+                type: 'agenda',
+                duration: {days: 7},
+                buttonText: 'Week'
+              },
+              day: {
+                type: 'agenda',
+                duration: {days: 1},
+                buttonText: 'Day'
+              }
+            },
+            firstDay: 1
+          })
+        })
+      </script>
+    </div>
+  </div>
+</div>

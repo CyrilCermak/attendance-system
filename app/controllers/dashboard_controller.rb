@@ -1,5 +1,6 @@
-class Admin::DashboardController < AdminController
+class DashboardController < ApplicationController
   before_filter :authenticate_user!
+  before_filter :user_dashboard
 
   def index
     @workers = Worker.all

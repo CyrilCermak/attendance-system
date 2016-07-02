@@ -1,0 +1,6 @@
+<%= simple_form_for @department, url: admin_create_department_path do |f| %>
+    <% f.input :name %>
+    <% f.input :floor %>
+    <% f.association :positions %>
+    <% f.button :submit %>
+<% end %>

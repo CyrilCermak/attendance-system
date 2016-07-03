@@ -1,0 +1,21 @@
+<div class="col-lg-12">
+  <div id="row">
+    <%= simple_form_for @worker, url: admin_update_worker_path(@worker), method: :patch do |f| %>
+
+        <%= f.input :first_name, placeholder: 'first name' %>
+
+        <%= f.input :last_name, placeholder: 'last name' %>
+
+        <%= f.input :email, placeholder: 'Enter email' %>
+
+
+        <%= f.association :position, collection: Position.all %>
+
+        <%= f.input :mac, placeholder: 'mac address' %>
+
+        <%= f.input :ip, placeholder: 'ip address' %>
+
+        <%= f.button :submit, name: "Save" %>
+    <% end %>
+  </div>
+</div>

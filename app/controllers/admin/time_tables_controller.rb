@@ -1,5 +1,4 @@
 class Admin::TimeTablesController < AdminController
-  before_filter :authenticate_user!
 
   def show
     @worker = Worker.find_by(id: params[:id])

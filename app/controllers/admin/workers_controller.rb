@@ -1,6 +1,5 @@
 class Admin::WorkersController < AdminController
-  before_filter :authenticate_user!
-  before_action :set_worker, only: [:show, :update, :destroy, :show_holidays]
+  before_action :set_worker, only: [:update, :destroy, :show_holidays]
   before_action :is_admin?, only: [:update, :destroy, :create, :new, :edit]
 
   def index
@@ -13,8 +12,8 @@ class Admin::WorkersController < AdminController
 
   def show
     respond_to do |format|
-      format.html
       format.js
+      format.html
     end
   end
 
@@ -27,6 +26,7 @@ class Admin::WorkersController < AdminController
   # POST /workers.json
   def create
     @worker = Worker.new(worker_params)
+    puts(params[:save])
     respond_to do |format|
       if @worker.save
         format.html { redirect_to admin_workers_path, notice: 'Worker was successfully created.' }
@@ -42,9 +42,14 @@ class Admin::WorkersController < AdminController
   # PATCH/PUT /workers/1.json
   def update
     respond_to do |format|
-      if @worker.update(worker_params)
-        format.html { redirect_to admin_workers_path, notice: 'Worker was successfully updated.' }
-        format.json { render :show, status: :ok, location: @worker }
+      if @worker.update!(worker_params)
+        if params[:Save] == "Update User"
+          format.html { redirect_to admin_workers_path, notice: 'Worker was successfully updated.' }
+          format.json { render :show, status: :ok, location: @worker }
+        else
+          format.html { redirect_to admin_contacts_path, notice: 'Worker was successfully updated.' }
+          format.json { render :show, status: :ok, location: @worker }
+        end
       else
         format.html { render :edit }
         format.json { render json: @worker.errors, status: :unprocessable_entity }
@@ -57,7 +62,7 @@ class Admin::WorkersController < AdminController
   def destroy
     @worker.destroy
     respond_to do |format|
-      format.html { redirect_to workers_url, notice: 'Worker was successfully destroyed.' }
+      format.html { redirect_to admin_workers_path, notice: 'Worker was successfully destroyed.' }
       format.json { head :no_content }
     end
   end
@@ -81,6 +86,6 @@ class Admin::WorkersController < AdminController
 
   # Never trust parameters from the scary internet, only allow the white list through.
   def worker_params
-    params.require(:worker).permit(:mac, :first_name, :ip, :mac, :state, :last_name, :email, :password, :position_id)
+    params.require(:worker).permit(:mac, :first_name, :ip, :mac, :state, :last_name, :email, :password, :position_id, :phone, :company_phone)
   end
 end

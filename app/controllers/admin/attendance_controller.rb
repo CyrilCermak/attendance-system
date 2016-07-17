@@ -7,7 +7,6 @@ class Admin::AttendanceController < AdminController
       @worker = Worker.find_by(id: params[:time_table][:worker_id])
     end
     @workers = Worker.all
-    render layout: false
   end
 
 end

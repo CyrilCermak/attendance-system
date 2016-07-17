@@ -10,10 +10,10 @@ Rails.application.routes.draw do
   get 'admin/workers' => "admin/workers#index" ,as: :admin_workers
   get 'admin/worker/new' => "admin/workers#new" ,as: :admin_new_worker
   get 'admin/worker/:id' => "admin/workers#show" ,as: :admin_show_worker
-  get 'admin/worker/edit/:id' => "admin/workers#edit", as: :admin_edit_worker
   get '/worker/time_table/:id' => "time_tables#show", as: :time_table
+  get 'admin/worker/edit/:id' => "admin/workers#edit", as: :admin_edit_worker
   patch 'admin/worker/edit/:id' => "admin/workers#update", as: :admin_update_worker
-  delete 'admin/worker/delete/:id' => "admin/workers#edit", as: :admin_delete_worker
+  delete 'admin/worker/delete/:id' => "admin/workers#destroy", as: :admin_delete_worker
   post 'admin/workers/new' => "admin/workers#create" ,as: :admin_create_worker
 
   get 'admin/holidays' => "admin/holidays#index", as: :admin_holidays
@@ -32,6 +32,12 @@ Rails.application.routes.draw do
   post 'admin/company/position/new' => "admin/companys#create_position", as: :admin_create_position
   post 'admin/company/position/update/:id' => "admin/companys#update_position", as: :admin_update_position
   delete 'admin/company/position/delete/:id' => "admin/companys#delete_position", as: :admin_delete_position
+
+  get 'admin/contacts' => "admin/contacts#index", as: :admin_contacts
+
+  get 'admin/attendance' => "admin/attendance#index", as: :admin_attendance
+  post 'admin/attendance' => "admin/attendance#index", as: :admin_attendance_show_worker
+
   devise_for :users
   devise_for :workers
 

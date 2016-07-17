@@ -16,12 +16,15 @@ departments = ["IT","Accounting", "HR","PR","Sales","Development","Headquater"]
 i = 0
 
 while i < first_names.length
-  #TODO - holidays
   d = Department.create!(name: departments[i], floor: rand(0..7))
   p = Position.create!(name: positions[i], wage: rand(100000..190000), department: d)
   w = Worker.create!(first_name: first_names[i], last_name: last_names[i], password: passwords[0], email: emails[i], mac: mac[i], position: p, state: true )
+  h = Holiday.create!(start: Time.now + 100000, end: Time.now + 1000000, name: "#{first_names[i]} - Holiday", worker: w, reviewed: rand(0..1) ) if i%3 == 0
   9.times do |j|
-    TimeTable.create!(start: "2016-0#{j+1}-25 0#{rand 8..9}:00:06", end: "2016-0#{j+1}-25 17:#{25..30}:06", worker: w)
+    TimeTable.create!(start: "2016-07-#{17 + j} 0#{rand 8..9}:00:06", end: "2016-07-#{17 + j} 17:#{25..30}:06", worker: w)
   end
   i += 1
 end
+
+#Admin user!
+User.create!(email: "admin@gmail.com",password: "123456789", admin: true, first_name: "Cyril", last_name: "Cermak")

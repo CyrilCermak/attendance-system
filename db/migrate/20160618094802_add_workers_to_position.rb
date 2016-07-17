@@ -1,5 +1,5 @@
 class AddWorkersToPosition < ActiveRecord::Migration
   def change
-    add_column :position_id, :workers, :reference
+    add_column :workers, :position_id, :reference
   end
 end

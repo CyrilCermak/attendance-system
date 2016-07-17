@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160626052232) do
+ActiveRecord::Schema.define(version: 20160702040912) do
 
   create_table "dashboards", force: :cascade do |t|
     t.datetime "created_at", null: false
@@ -79,21 +79,13 @@ ActiveRecord::Schema.define(version: 20160626052232) do
     t.integer  "position_id"
     t.integer  "time_tables_id"
     t.string   "type"
+    t.string   "phone"
+    t.string   "company_phone",          default: ""
   end
 
   add_index "users", ["email"], name: "index_users_on_email", unique: true
   add_index "users", ["position_id"], name: "index_users_on_position_id"
   add_index "users", ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
-
-  create_table "warkers", force: :cascade do |t|
-    t.string   "mac"
-    t.string   "first_name"
-    t.string   "ip"
-    t.boolean  "state"
-    t.string   "last_name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-  end
 
   create_table "workers", force: :cascade do |t|
     t.string   "first_name"
@@ -107,6 +99,7 @@ ActiveRecord::Schema.define(version: 20160626052232) do
     t.integer  "position_id"
     t.string   "email"
     t.integer  "holidays_id"
+    t.string   "phone"
   end
 
   add_index "workers", ["holidays_id"], name: "index_workers_on_holidays_id"

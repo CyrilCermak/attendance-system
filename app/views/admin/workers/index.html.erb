@@ -5,7 +5,6 @@
       <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Worker: activate to sort column ascending" style="width: 104px;">Worker</th>
       <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Position: activate to sort column ascending" aria-sort="descending" style="width: 127px;">Position</th>
       <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Department: activate to sort column ascending" style="width: 118px;">Department</th>
-      <th class="sorting" tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Email: activate to sort column ascending" style="width: 66px;">Email</th>
       <th aria-label="Show: deactivate to sort column ascending" style="width: 66px;">Show</th>
       <th tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Edit:" style="width: 66px;">Edit</th>
       <th tabindex="0" aria-controls="dataTables-example" rowspan="1" colspan="1" aria-label="Delete:" style="width: 66px;">Delete</th>
@@ -26,13 +25,11 @@
           <% else %>
               <td class="sorting_1"></td>
           <% end %>
-          <td class="sorting_1"><%= worker.email %></td>
-          <td class=""><%= link_to "Show", "#showModal", data: {toggle: :modal} %></td>
-          <td class=""><%= link_to "Edit", "#editModal", data: {toggle: :modal} %></td>
-          <td class=""><%= link_to "Delete", admin_delete_worker_path(worker), method: :delete %></td>
-
+          <td class=""><%= link_to "Show", "#showWorker#{worker.id}", data: {toggle: :modal} %></td>
+          <td class=""><%= link_to "Edit", admin_update_worker_path(worker) %></td>
+          <td class=""><%= link_to "Delete", admin_delete_worker_path(worker), method: :delete, data: {confirm: "Are you sure?"} %></td>
           <!--SHOW MODAL-->
-          <div class="modal fade" id="showModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+          <div class="modal fade" id="showWorker<%= worker.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
             <div class="modal-dialog">
               <div class="modal-content">
                 <div class="modal-header">
@@ -65,42 +62,16 @@
             <!-- /.modal-dialog -->
           </div>
           <!-- /.modal -->
-          <!--Edit Modal-->
-          <div class="modal fade" id="editModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-            <div class="modal-dialog">
-              <div class="modal-content">
-                <div class="modal-header">
-                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                  <h2 class="modal-title" id="myModalLabel"><%= worker.full_name %></h2>
-                </div>
-                <div class="modal-body">
-                  <%= simple_form_for worker, url: admin_edit_worker_path(worker) do |f| %>
-                      <%= f.input :first_name, placeholder: 'first name' %>
-                      <%= f.input :last_name, placeholder: 'last name' %>
-                      <%= f.input :email, placeholder: 'Enter email' %>
-                      <%= f.input :mac, placeholder: 'Mac address' %>
-                      <%= f.input :ip, placeholder: 'Ip address' %>
-                      <%= f.button :submit, name: "Save", class: "btn btn-default" %>
-                  <% end %>
-                </div>
-                <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                </div>
-              </div>
-              <!-- /.modal-content -->
-            </div>
-            <!-- /.modal-dialog -->
-          </div>
         </tr>
     <% end %>
     </tbody>
   </table>
   <div class="CreateWorker">
-    <a href="#newModal" data-toggle="modal">
+    <a href="#newWorker" data-toggle="modal">
       <button type="button" class="btn btn-primary btn-lg btn-block">New Worker</button>
     </a>
-    <!--Edit Modal-->
-    <div class="modal fade" id="newModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+    <!--New Worker Modal-->
+    <div class="modal fade" id="newWorker" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">

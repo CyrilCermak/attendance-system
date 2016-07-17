@@ -38,6 +38,7 @@ class Worker < User
   validates :first_name, presence: true
   validates :last_name, presence: true
   validates :mac, uniqueness: true
+  # validates :phone, phone: true, presence: false
 
   include WorkersHelper
 

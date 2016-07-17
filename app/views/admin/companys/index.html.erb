@@ -74,51 +74,59 @@
     </div>
   </div>
 
-
-  <div class="panel-body">
-    <div class="table-responsive table-bordered">
-      <table class="table">
-        <thead>
-        <tr>
-          <th>Name</th>
-          <th>Wage</th>
-          <th>Edit</th>
-        </tr>
-        </thead>
-        <% @positions.each do |position| %>
-            <tbody>
+  <div class="col-lg-12">
+    <div class="panel panel-danger">
+      <div class="panel-heading">
+        <h4>Positions: (<%= @positions.size %>)</h4>
+      </div>
+      <div class="panel-body">
+        <div class="table-responsive table-bordered">
+          <table class="table">
+            <thead>
             <tr>
-              <td><%= position.name %></td>
-              <td><%= position.wage %></td>
-              <td><%= link_to "Edit", "#editPosition", data: {toggle: :modal} %></td>
+              <th>Name</th>
+              <th>Wage</th>
+              <th>Edit</th>
+              <th>Delete</th>
             </tr>
-            <div class="modal fade" id="editPosition" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
-              <div class="modal-dialog">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                    <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+            </thead>
+            <% @positions.each do |position| %>
+                <tbody>
+                <tr>
+                  <td><%= position.name %></td>
+                  <td><%= position.wage %></td>
+                  <td><%= link_to "Edit", "#editPosition#{position.id}", data: {toggle: :modal} %></td>
+                  <td><%= link_to "Delete", admin_delete_position_path(position), method: :delete , data: {confirm: "Are you sure?"}%></td>
+                </tr>
+                <div class="modal fade" id="editPosition<%= position.id %>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">
+                  <div class="modal-dialog">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                        <h2 class="modal-title" id="myModalLabel">New Worker</h2>
+                      </div>
+                      <div class="modal-body">
+                        <%= simple_form_for position, url: admin_update_position_path(position) do |f| %>
+                            <%= f.input :name, placeholder: 'Name' %>
+                            <%= f.input :wage %>
+                            <%= f.button :submit, name: "Save", class: "btn btn-default" %>
+                        <% end %>
+                      </div>
+                      <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                      </div>
+                    </div>
+                    <!-- /.modal-content -->
                   </div>
-                  <div class="modal-body">
-                    <%= simple_form_for position, url: admin_update_position_path(position) do |f| %>
-                        <%= f.input :name, placeholder: 'Name' %>
-                        <%= f.input :wage %>
-                        <%= f.button :submit, name: "Save", class: "btn btn-default" %>
-                    <% end %>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                  </div>
+                  <!-- /.modal-dialog -->
                 </div>
-                <!-- /.modal-content -->
-              </div>
-              <!-- /.modal-dialog -->
-            </div>
-        <% end %>
-        </tbody>
-      </table>
+            <% end %>
+            </tbody>
+          </table>
+        </div>
+        <!-- /.table-responsive -->
+      </div>
     </div>
-    <!-- /.table-responsive -->
   </div>
 
 
@@ -129,6 +137,8 @@
   <a href="#newPosition" data-toggle="modal">
     <button type="button" class="btn btn-danger btn-lg btn-block">New Position</button>
   </a>
+
+
   <div class="CreateDepartment">
     <!--Edit Modal-->
     <div class="modal fade" id="newDepartment" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" style="display: none;">

@@ -57,7 +57,6 @@ class Admin::CompanysController < AdminController
     end
   end
 
-
   private
 
   def workers_by_ids

@@ -1,7 +1,7 @@
 module API::Helpers
   extend Grape::API::Helpers
-
-  def current_user
+  x = 10
+  def current_user(test)
     @user ||= User.find_by(token: params[:token])
   end
 
@@ -16,3 +16,5 @@ module API::Helpers
   end
 
 end
+
+#test
